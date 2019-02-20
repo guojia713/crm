@@ -8,7 +8,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "compodoc": "compodoc -p src/tsconfig.app.json -o -s"
+    "compodoc": "compodoc -p src/tsconfig.app.json -o -s",
+    "bundleReport" : "ng build --prod --stats-json && webpack-bundle-analyzer dist/crm/stats.json"
   },
   "private": true,
   "dependencies": {
@@ -46,6 +47,7 @@
     "protractor": "~5.4.0",
     "ts-node": "~7.0.0",
     "tslint": "~5.11.0",
-    "typescript": "~3.2.2"
+    "typescript": "~3.2.2",
+    "webpack-bundle-analyzer": "^3.0.4"
   }
 }
