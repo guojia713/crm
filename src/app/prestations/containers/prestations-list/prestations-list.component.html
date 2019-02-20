@@ -1,3 +1,7 @@
-<p>
-  prestations-list works!
-</p>
+<app-table [classes]="'table-bordered'" [headers]="headerCol1">
+  <ng-container *ngIf="prestations.length > 0">
+    <ng-container *ngFor="let prestation of prestations">
+        <app-prestation [item]="prestation"></app-prestation>
+    </ng-container>
+  </ng-container>
+</app-table>

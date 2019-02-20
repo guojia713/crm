@@ -3,12 +3,14 @@ import { CommonModule } from '@angular/common';
 import { PrestationsListComponent } from './containers/prestations-list/prestations-list.component';
 import { PrestationComponent } from './components/prestation/prestation.component';
 import { PrestationsRoutingModule } from './prestations-routing.module';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [PrestationsListComponent, PrestationComponent],
   imports: [
     CommonModule,
-    PrestationsRoutingModule
+    PrestationsRoutingModule,
+    SharedModule
   ]
 })
 export class PrestationsModule { }
