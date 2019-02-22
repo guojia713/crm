@@ -9,7 +9,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "compodoc": "compodoc -p src/tsconfig.app.json -o -s",
-    "bundleReport" : "ng build --prod --stats-json && webpack-bundle-analyzer dist/crm/stats.json"
+    "bundleReport": "ng build --prod --stats-json && webpack-bundle-analyzer dist/crm/stats.json"
   },
   "private": true,
   "dependencies": {
@@ -20,14 +20,16 @@
     "@angular/forms": "~7.2.0",
     "@angular/platform-browser": "~7.2.0",
     "@angular/platform-browser-dynamic": "~7.2.0",
+    "@angular/pwa": "^0.12.4",
     "@angular/router": "~7.2.0",
+    "@angular/service-worker": "~7.2.0",
+    "@ng-bootstrap/ng-bootstrap": "^4.0.3",
     "@ng-bootstrap/schematics": "^2.0.0-alpha.1",
+    "bootstrap": "^4.0.0",
     "core-js": "^2.5.4",
     "rxjs": "~6.4.0",
     "tslib": "^1.9.0",
-    "zone.js": "~0.8.26",
-    "@ng-bootstrap/ng-bootstrap": "^4.0.3",
-    "bootstrap": "^4.0.0"
+    "zone.js": "~0.8.26"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.13.0",
