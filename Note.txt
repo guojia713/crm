@@ -1,0 +1,370 @@
+﻿Note : 
+
+************************ Package.json ************************
+
+{
+    "name" : "",
+    "version" :"";
+    "scripts": {
+        "start": "ng start"
+    }
+    "dependecies" : {
+
+    } // Les dependecies utilisé pour application
+
+    "devDependecies" :{
+       "typeScript": "~3.2.4" 
+        // règle version : versionMajeur.versionMineur.batch
+        // ~ / ^ : on accepte les versions + , mais pas pour la version majeur 
+        // >= : on accepte les versions + y compris la verison majeur
+    } // Les dependecies utilisé pour le dev
+}
+
+Commande : 
+npm install d3 --save-dev  ==> Add into devDependecies
+npm install d3 --save  ( by default) ==> Add into dependecies
+npm install d3 -g ( global )
+
+npm install @compodoc/compodoc -g  
+
+*******************************************************************
+npm install -g @angular/cli 
+ng version // Pour savoir les versions angular-cli
+
+aller dans le répertoire du projet , faire "code ." => ouvrir VS code du projet
+
+***********************************************
+ng serve / ng run start : lancer l'application , generer les fichiers : localhost:4200
+
+
+*************************************************************************************
+                                19/02/2019 J-2 
+*************************************************************************************
+
+angular-cli est un module de nodeJS 
+
+Compilation : 
+AOT : fournit java bit code (ng build)
+JIT : just in time , fournit fichiers JS ( ng serve)
+
+Build : 
+ng build --prod 
+ng build --dev ( par défaut pour ng build) 
+ng build --env=prod (dev, recette) pour les nouveaux envs, il faut faire --env=newEnv
+
+le dossier '/dist' va être crée 
+En mode prod :
+les fichiers sont générés avec un numéro hashCode 
+( 
+    -qui change lors q'on fait une modif, pour éviter le navigateur prens les fichiers en cache
+    -le hash ne change pas si pas de modif
+)
+
+DOC :
+1. https://github.com/angular/angular-cli/wiki WIKI du angular-cli
+2. https://angular.io/docs Docs officiel 
+3. https://update.angular.io/ Update version angular
+
+
+CODE :
+- Generate new module :  ng g module prestations
+- Generate new component : creer deux dossiers : components + containers , 
+    se rentrer dans containers, then 'ng g component prestations-list'
+components : des components basique 
+containers : on appelles des components 
+
+Graphie :
+https://ng-bootstrap.github.io/#/home
+https://material.angular.io/
+https://getbootstrap.com/
+
+Using ng add for bootstrap / material 
+https://blog.angular.io/version-6-of-angular-now-available-cc56b0efa7a4
+
+ng add @ng-bootstrap/schematics
+ng update @ng-bootstrap/ng-bootstrap 
+
+CSS : 
+add fichier css with '_XXX.scss'
+@import 'XXX' dans style.scss de la racine 
+
+!! emmet abbraviation .content => <div class="content"></div> (automatique)
+ul.nav.flex-column>li*2>a
+==>  
+<ul class="nav flex-column">
+    <li><a href=""></a></li>
+    <li><a href=""></a></li>
+</ul>
+
+
+!!! Utiliser les variables d'un autre component au même niveau:
+<app-header #head></app-header>
+Avec #head, on peux appeller tous les elements et fonctions du component app-header
+
+A faire qu'en fichier HTML
+
+*************************************************
+                    ngClass 
+*************************************************
+
+!! ngClass : ex : <main [ngClass]="{'close-aside' : head.open}">
+[ngClass] = "{'class' : boolean}"
+if head:open = true, on ajoute cette class 'close-aside'
+
+*************************************************
+                    Routing 
+*************************************************
+
+app.routing.module.ts 
+!!! imports: [RouterModule.forRoot(routes)] : Un seul fois dans l'application
+les autres modules routing :
+!!! imports: [RouterModule.forChild(routes)] forChild au lieu de forRoot
+
+Add un routing: 
+Dans module routing 
+const routes: Routes = [
+  {path: 'prestations', component: PrestationsListComponent}
+];
+
+Dans  <router-outlet></router-outlet> qu'on affiche PrestationsListComponent
+N'oulibe pas import 'RouterModule" 
+
+Redirection :  
+const routes: Routes = [
+    {path: '', redirectTo: 'prestations', pathMatch: 'full'}
+    {path: '**', component: pageNotFoundComponent}  :'**' : on navigue dans tous les cas
+]
+
+*****************************************************
+                    EasyLoading 
+*****************************************************                    
+Add app routing 
+  {path: 'prestations', loadChildren: './prestations/prestations.module#PrestationsModule'} 
+  Syntaxe loadChildren: 'cheminRelativeDUModule#NomModule'
+Remove PrestationsModule from app.module.
+and dans prestation routing : {path: '', component: PrestationsListComponent}
+
+Aide Code pour afficher la config des routes
+Dans app.module :
+
+export class AppModule {
+   // Diagnostic only: inspect router configuration
+   constructor(router: Router) {
+    // Use a custom replacer to display function names in the route configs
+    const replacer = (key, value) => (typeof value === 'function') ? value.name : value;
+
+    console.log('Routes: ', JSON.stringify(router.config, replacer, 2));
+  }
+ }
+
+ EasyLoading , precharger tous les modules au fur à mesures 
+ Dans app.routing 
+imports: [RouterModule.forRoot(routes, {preloadingStrategy: PreloadAllModules})],
+
+******************************************************
+                    Interface
+ *****************************************************
+
+ Les types du variable sont en minisule !!!!!!!!!!!!
+
+client: string;
+lieu?: string;  => ?: Not obligatoire
+id: number | string; 
+
+*******************************************************
+                 class
+********************************************************
+
+  constructor(fields?: Partial<Prestation> & Pick<Prestation,  'id'> ) {
+    if (fields) {
+      Object.assign(this, fields);  // Faire une copie de l'object de fields -> this
+    }
+  }
+
+  // new Prestation()
+  // new Prestation({name :'Pierre'})
+  // new Prestation({})
+  // new Prestation({isAdmin : false})  ==> Repondre une erreur
+
+  ***********************************************************
+             Directive
+  ***********************************************************     
+
+ -- *ngIf="boolean" <div *ngIf="true"></div>
+ -- *ngFor="let user of users; index as i" ==> 'let', 'of', 'index as' sont des mots clés
+ <li *ngFor="let user of users, index as i">{{i}}</li>
+
+ --ngSwitch 
+ <div [ngSwitch = "messageCount"]>
+ <p *ngSwitchCase="1">......</p>
+ <p *ngSwitchDefault>"default"</p>
+ </div>
+
+--ngModel
+<input [(ngModel)] = "color">
+
+**Property binding
+<p [style.color="myColor"]></p>
+<p [textContent="text"]></p>  == <p>{{text}}</p>
+
+**Event binding
+<button (click)="onButtionClick($Event)" ></button>
+
+!!! Pas deux Directive *ngIf / *ngFor dans le même balise
+
+<ng-container *ngIf="prestations">
+Balise <ng-container></ng-container> sert à ajouter les condition *ngIf / *ngFor
+
+
+******************************************************
+          Deployement   +  Firebase
+******************************************************
+Install http-server :
+npm install -g http-server
+
+firebase deploy
+Firebase ref: Note surr 'lien.txt' sur Drive google
+
+*****************************************************
+                Transclusion projetction 
+*****************************************************
+Shared : <ng-content select='[header]'></ng-content>          
+prestations-list.html : <h1 header> Header </h1>      
+
+
+
+*****************************************************
+                  Pipe 
+*****************************************************
+
+pour date :
+<td>{{item.dateDebut | date:'shortDate'}}</td>
+
+Créer son prope pipe : il vaut mieux de mettre  dans shared
+-- ng g pipe **
+
+then dans *.pipe.ts 
+transform(value: Prestation, args?: boolean): any {
+    return args? value.totalHT() : value.totalTTC();
+  }
+
+then dans HTML :
+ <td>{{item | total:true | currency:'EUR'}}</td>  ==> il faut que la sortie de total:ture soit un number
+  <td>{{item | total:false}}</td>
+
+iteration sur enum :
+PrestationStatus est un enum
+Object.values(PrestationStatus) return la liste des valeurs
+
+
+<select>
+  <option *ngFor="let status of statusPrestations" [value]="status">{{status}}</option>
+</select>
+avec [] , on prends la valeur du variable status, sans [], on prends status en tant que "status"
+
+********** IMPORT  FormsModule contient ngModel *****************
+ <select [(ngModel)]="item.status">
+      <option *ngFor="let status of statusPrestations" [value]="status">{{status}}</option>
+</select>
+
+***********************************************************
+                        Directive
+***********************************************************
+
+Pas de template, crée pour s'accorcher sur une template
+A utiliser comme un attribut
+Bonne pratique : input doit être le même nom que directive
+Donc lors qu'on utilise : on appelle directive et on passe un var dans ce directive
+  <select [(ngModel)]="item.status" [appColorStatus]="">
+
+Lifecycle Hook  sur angular.io
+ngOnInit()
+ngAfterViewChecked()
+ngOnDestroy()
+
+Decorative : @HostBinding()  dans directive pour pouvir passer l'ele dans dom
+@HostBinding('class') myClass: string; => Get class du element
+
+!!!!!!!!! Enlever l'accent du Francais: 
+state.normalize('NFD').replace(/[\u0300-\u036f\s]/g, '')
+
+
+***********************************************************
+                        SERVICE
+***********************************************************
+
+Serice est déclaraé dans app.module -> [providers] avant Angular6
+maintenant  :  Equivalent en haut , le service est dipos partout dans l'application
+@Injectable({
+  providedIn: 'root'
+})  
+
+NE pas utiliser service dans HTML, lonc lors de l'initialisation utilsier private.
+Dans component utilse : init come ci-dessous : 
+  constructor(private versionService: VersionService) {
+
+  }
+
+***********************************************************
+                  BEhavier subject : 
+***********************************************************
+1. Declare  avec observator filter pipe : 
+
+import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+import {filter} from 'rxjs/operators';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class VersionService {
+  private _version$ = new BehaviorSubject(0);
+  // Pour faire un getter et setter
+  public version$ = this._version$.asObservable().pipe(
+    filter((x) => x < 20)
+  );
+  constructor() { }
+
+  add() {
+    this._version$.next(this._version$.value + 1);
+  }
+
+  minus() {
+    this._version$.next(this._version$.value - 1);
+  }
+}
+
+Version 2 :
+Dans service :  
+
+private _version$ = new BehaviorSubject(0);
+  // Pour faire un getter et setter
+  public version$ = this._version$.asObservable().pipe(
+    filter((x) => x < 20)
+  );
+
+ HTML :  <h1 *ngIf="(version$ | async) as version">{{title}} Version : {{version}}</h1>
+
+
+2. Subscribe  avec pipe filter :
+ this.versionService.version$
+    .pipe( filter((x) => x < 10) )
+    .subscribe((v) => {
+      this.version = v;
+    })
+    ;
+
+Observables : 
+A utilsier avec :
+    this.versionService.version$
+    .pipe( filter((x) => x < 10), takeWhile( (x) => x < 10 ) ) : les
+ observator dans parenthèse sont dispo sur le site https://rxmarbles.com/
+
+
+ *******************************************************************
+            PWA 
+ ******************************************************************* 
+Installation : 
+ ng add @angular/pwa          
+
+ swUpdate : update automatique
