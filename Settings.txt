@@ -1,0 +1,18 @@
+-- Settings VS code:
+
+{
+    "workbench.iconTheme": "material-icon-theme",
+    "git.ignoreMissingGitWarning": true,
+    "files.autoSave": "onFocusChange",
+    "tslint.autoFixOnSave": true,
+    "tslint.configFile": "tslint.json",
+    
+}
+
+-- Extension à installer dans VS Code:
+
+angular essentials
+angulardoc
+auto close tag
+bracket pair colorized
+indent rainbow
