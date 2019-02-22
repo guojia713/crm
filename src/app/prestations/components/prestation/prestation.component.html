@@ -1,15 +1,22 @@
 <tr>
-  <td>{{item.id}}</td>
-  <td>{{item.name}}</td>
-  <td>{{item.client}}</td>
-  <td>{{item.lieu}}</td>
-  <td>{{item.status}}</td>
-  <td>{{item.type}}</td>
-  <td>{{item.nbJours}}</td>
-  <td>{{item.dateDebut | date:'shortDate'}}</td>
-  <td>{{item.dateFin}}</td>
-  <td>{{item.tauxTva}}</td>
-  <td>{{item.tjmHt | currency :'EUR'}}</td>
-  <td>{{item.totalHT()}}</td>
-  <td>{{item.totalTTC()}}</td>
+  <td>{{ item.id }}</td>
+  <td>{{ item.name }}</td>
+  <td>{{ item.client }}</td>
+  <td>{{ item.lieu }}</td>
+  <td>
+    <select [(ngModel)]="item.status" [appColorStatus]="item.status">
+      <option *ngFor="let status of statusPrestations" [value]="status" [appColorStatus]="status">{{
+        status
+      }}</option>
+    </select>
+  </td>
+  <td>{{ item.type }}</td>
+  <td>{{ item.nbJours }}</td>
+  <td>{{ item.dateDebut | date: "shortDate" }}</td>
+  <td>{{ item.dateFin }}</td>
+  <td>{{ item.tauxTva }}</td>
+  <td>{{ item.tjmHt | currency: "EUR" }}</td>
+
+  <td>{{ item | total: true | currency: "EUR" }}</td>
+  <td>{{ item | total: false | currency: "EUR" }}</td>
 </tr>

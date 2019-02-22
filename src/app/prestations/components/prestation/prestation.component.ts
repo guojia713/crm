@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Prestation } from '../../models/prestation';
+import { PrestationStatus } from '../../enumerables/prestation-status.enum';
 
 @Component({
   selector: 'app-prestation',
@@ -8,7 +9,7 @@ import { Prestation } from '../../models/prestation';
 })
 export class PrestationComponent implements OnInit {
   @Input() item: Prestation;
-
+  statusPrestations = Object.values(PrestationStatus);
   constructor() { }
 
   ngOnInit() {

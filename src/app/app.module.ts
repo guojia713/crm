@@ -8,6 +8,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LoginModule } from './login/login.module';
 import { Router } from '@angular/router';
 import { PagenotfoundModule } from './pagenotfound/pagenotfound.module';
+import { HttpClientModule} from '@angular/common/http';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -19,8 +22,10 @@ import { PagenotfoundModule } from './pagenotfound/pagenotfound.module';
     UiModule,
     LoginModule,
     NgbModule,
+    HttpClientModule,
     // Attention, ce module doit être au dernier
-    PagenotfoundModule
+    PagenotfoundModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [],
   bootstrap: [AppComponent]

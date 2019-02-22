@@ -3,7 +3,7 @@
       <button type="button" class="btn btn-dark" (click)="toggle()">Nav {{close}}</button>
   </div>
   <div class="title flex-grow-1">
-    <h1>{{title}}</h1>
+    <h1 *ngIf="(version$ | async) as version">{{title}} Version : {{version}}</h1>
   </div>
   <div>
       <button type="button" class="btn btn-dark">Link</button>
